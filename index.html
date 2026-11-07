@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishShield - Protégete del Phishing</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-flex">
+            <div class="logo">
+                <img src="assets/logo.png" alt="PhishShield Logo">
+                <span>Phish</span>Shield
+            </div>
+            <nav>
+                <a href="#inicio">Inicio</a>
+                <a href="#verificador">Verificador</a>
+                <a href="#aprender">Aprender</a>
+                <a href="#consejos">Consejos</a>
+            </nav>
+            <button class="btn-primary"
+                onclick="document.getElementById('verificador').scrollIntoView({behavior:'smooth'})">Verificar
+                URL</button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="inicio" class="hero">
+        <div class="container hero-flex">
+            <div class="hero-text">
+                <span class="badge">🔒 Protección Anti-Phishing en tiempo real</span>
+                <h1>No caigas en <span class="highlight">trampas digitales.</span><br>Verifica antes de hacer clic.</h1>
+                <p>PhishShield analiza enlaces sospechosos, detecta dominios falsos y te enseña a identificar ataques de
+                    phishing antes de que sea tarde.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary large"
+                        onclick="document.getElementById('verificador').scrollIntoView({behavior:'smooth'})">Analizar un
+                        enlace ahora</button>
+                    <button class="btn-secondary large"
+                        onclick="document.getElementById('aprender').scrollIntoView({behavior:'smooth'})">Aprender a
+                        protegerme</button>
+                </div>
+                <div class="stats">
+                    <div><strong id="stat-analizados">12,480</strong><span>URLs analizadas</span></div>
+                    <div><strong>98.2%</strong><span>Precisión</span></div>
+                    <div><strong>24/7</strong><span>Protección</span></div>
+                </div>
+            </div>
+            <div class="hero-card">
+                <div class="card-header">⚠️ Alerta Detectada</div>
+                <p><strong>【entity-paypal¦canonical_name=PayPal】-seguro-login.com</strong></p>
+                <p class="danger">Este dominio imita a 【entity-PayPal¦canonical_name=PayPal】. No ingreses tus datos.</p>
+                <div class="progress-bar">
+                    <div class="progress danger-bg" style="width: 92%"></div>
+                </div>
+                <small>Riesgo: 92% - ALTO</small>
+                <hr>
+                <div class="card-header safe">✅ Sitio Seguro</div>
+                <p><strong>【entity-paypal¦canonical_name=PayPal】.com</strong></p>
+                <p class="safe-text">Dominio oficial verificado.</p>
+                <div class="progress-bar">
+                    <div class="progress safe-bg" style="width: 5%"></div>
+                </div>
+                <small>Riesgo: 5% - BAJO</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- VERIFICADOR -->
+    <section id="verificador" class="section">
+        <div class="container">
+            <h2 class="section-title">🔍 Verificador de Enlaces</h2>
+            <p class="section-subtitle">Pega un enlace sospechoso y PhishShield lo analizará al instante.</p>
+
+            <div class="checker-box">
+                <div class="input-group">
+                    <input type="text" id="urlInput" placeholder="Ej: https://banco-seguro-actualizar.com/login">
+                    <button onclick="analizarURL()">Analizar</button>
+                </div>
+                <p class="hint">Nunca pegues contraseñas, solo la URL que te llegó por correo, SMS o WhatsApp.</p>
+
+                <div id="resultado" class="resultado hidden">
+                    <h3 id="resultadoTitulo"></h3>
+                    <p id="resultadoDesc"></p>
+                    <div class="progress-bar big">
+                        <div id="barraRiesgo" class="progress"></div>
+                    </div>
+                    <p id="porcentajeRiesgo"></p>
+                    <ul id="listaAlertas"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APRENDER -->
+    <section id="aprender" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">🎓 Aprende a detectar Phishing</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <div class="icon">📧</div>
+                    <h3>1. Revisa el remitente</h3>
+                    <p>Los atacantes usan correos como <code>soporte@paypa1.com</code> con la letra "l" cambiada por
+                        "1". Siempre verifica el dominio real.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🔗</div>
+                    <h3>2. Pasa el mouse sin hacer clic</h3>
+                    <p>Antes de hacer clic, pasa el cursor sobre el enlace. Si la URL real no coincide con el texto, es
+                        una trampa.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">⏰</div>
+                    <h3>3. Desconfía de la urgencia</h3>
+                    <p>"¡Tu cuenta será cerrada en 2 horas!" Es la táctica más usada. Los bancos reales nunca te
+                        presionan así.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONSEJOS -->
+    <section id="consejos" class="section">
+        <div class="container">
+            <h2 class="section-title">✅ Checklist de Seguridad</h2>
+            <div class="checklist">
+                <label><input type="checkbox"> Activa la verificación en 2 pasos (2FA) en todas tus cuentas</label>
+                <label><input type="checkbox"> Nunca ingreses desde un link de un correo, escribe la URL tú
+                    mismo</label>
+                <label><input type="checkbox"> Revisa que la web tenga candado 🔒 y empiece con https://</label>
+                <label><input type="checkbox"> No descargues archivos .zip o .exe de remitentes desconocidos</label>
+                <label><input type="checkbox"> Si dudas, llama al banco, no respondas el mensaje</label>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 PhishShield - Hecho por David Romero para todo el mundo. 🌎</p>
+        <p><small>Esta herramienta es educativa, no reemplaza un antivirus.</small></p>
+        <p><small>Escribenos a virussecuritylabphishshield@gmail.com</small><img src="assets/logocorreo.png"
+                style="width:28px; vertical-align:middle;"> </p>
+        </p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
