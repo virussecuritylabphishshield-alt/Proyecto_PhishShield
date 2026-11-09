@@ -89,3 +89,17 @@ footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 30px 
     object-fit: contain;
     border-radius: 8px;
 }
+/* ARREGLO COLOR CUADRO - VERSIÓN FUERTE */
+.hero .hero-card p {
+    color: #0f172a !important;
+    font-weight: 700;
+}
+.hero .hero-card p.danger {
+    color: #dc2626 !important;
+}
+.hero .hero-card p.safe-text {
+    color: #16a34a !important;
+}
+.hero .hero-card small {
+    color: #334155 !important;
+}
