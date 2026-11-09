@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprender - PhishShield</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .quiz-box { background: white; max-width: 700px; margin: 30px auto; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .pregunta { display: none; }
+        .pregunta.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .pregunta h3 { font-size: 20px; margin-bottom: 10px; }
+        .ejemplo-correo { background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0f172a; padding: 16px; border-radius: 10px; margin: 16px 0; font-size: 14px; line-height: 1.7; }
+        .opciones button { display: block; width: 100%; text-align: left; background: #f8fafc; border: 2px solid #e2e8f0; padding: 14px; border-radius: 10px; margin: 10px 0; cursor: pointer; font-size: 15px; font-weight: 600; }
+        .opciones button:hover { border-color: #0f172a; background: white; }
+        .opciones button.correcto { background: #dcfce7; border-color: #22c55e; color: #166534; }
+        .opciones button.incorrecto { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+        .feedback { padding: 14px; border-radius: 10px; margin-top: 14px; display: none; font-size: 14px; }
+        .feedback.show { display: block; }
+        .feedback.ok { background: #dcfce7; color: #166534; }
+        .feedback.mal { background: #fee2e2; color: #991b1b; }
+        .btn-siguiente { background: #0f172a; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 16px; display: none; }
+        .btn-siguiente.show { display: inline-block; }
+        .progreso { background: #e2e8f0; height: 10px; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .progreso-barra { background: #22c55e; height: 100%; width: 33%; transition: 0.4s; }
+        #resultadoFinal { text-align: center; display: none; }
+        #resultadoFinal.show { display: block; }
+        .score-big { font-size: 64px; font-weight: 800; }
+        .leccion-card { background: white; padding: 20px; border-radius: 14px; border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container nav-flex">
+            <div class="logo">
+                <img src="../assets/logo.png" alt="PhishShield Logo">
+                <span>Phish</span>Shield
+            </div>
+            <nav>
+                <a href="../index.html">Inicio</a>
+                <a href="../index.html#verificador">Verificador</a>
+                <a href="aprender.html">Aprender</a>
+            </nav>
+            <button class="btn-primary" onclick="window.location.href='../index.html#verificador'">Verificar URL</button>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">🎓 Aprende a detectar Phishing</h2>
+            <p class="section-subtitle">Primero lee las 3 lecciones, luego haz el quiz. ¿Eres capaz de sacar 3/3?</p>
+
+            <!-- LECCIONES -->
+            <div class="grid-3">
+                <div class="leccion-card">
+                    <div class="icon">📧</div>
+                    <h3>Lección 1: El remitente miente</h3>
+                    <p>Los estafadores usan <code>soporte@【entity-paypa1¦canonical_name=PayPal】.com</code> cambiando la <b>l</b> por un <b>1</b>. Parece igual, pero no es el dominio oficial. Siempre revisa letra por letra.</p>
+                </div>
+                <div class="leccion-card">
+                    <div class="icon">🔗</div>
+                    <h3>Lección 2: El link es una trampa</h3>
+                    <p>El texto dice <code>www.banco.com</code> pero al pasar el mouse el link real es <code>banco-seguro-xyz.top</code>. Nunca confíes en el texto, confía en la URL real.</p>
+                </div>
+                <div class="leccion-card">
+                    <div class="icon">⏰</div>
+                    <h3>Lección 3: Te meten miedo</h3>
+                    <p><i>"¡Tu cuenta será cerrada en 2 horas si no verificas!"</i> Es la técnica #1. Los bancos reales nunca te presionan así por correo o WhatsApp.</p>
+                </div>
+            </div>
+
+            <!-- QUIZ -->
+            <div class="quiz-box">
+                <h2 style="text-align:center; margin-bottom:10px;">🧪 Quiz: ¿Caerías en la trampa?</h2>
+                <p style="text-align:center; color:#64748b; margin-bottom:20px;">Puntaje: <strong id="puntaje">0 / 3</strong></p>
+                <div class="progreso"><div class="progreso-barra" id="barraProgreso"></div></div>
+
+                <!-- PREGUNTA 1 -->
+                <div class="pregunta active" id="p1">
+                    <h3>Pregunta 1 de 3</h3>
+                    <p>Te llega este correo, ¿qué haces?</p>
+                    <div class="ejemplo-correo">
+                        <strong>De:</strong> soporte@【entity-paypa1¦canonical_name=PayPal】.com<br>
+                        <strong>Asunto:</strong> ⚠️ Tu cuenta será suspendida<br>
+                        <strong>Mensaje:</strong> Haz clic aquí para verificar tu cuenta en las próximas 2 horas o será cerrada: <br>
+                        <a href="#">www.【entity-paypal¦canonical_name=PayPal】-verificar-seguro.top/login</a>
+                    </div>
+                    <div class="opciones">
+                        <button onclick="responder(this, false, 'f1')">A) Hago clic rápido antes de que se cierre</button>
+                        <button onclick="responder(this, true, 'f1')">B) No hago clic, es phishing. El remitente usa "【entity-paypa1¦canonical_name=PayPal】" con 1 y el link es .top</button>
+                        <button onclick="responder(this, false, 'f1')">C) Respondo el correo pidiendo más información</button>
+                    </div>
+                    <div class="feedback" id="f1"></div>
+                    <button class="btn-siguiente" id="s1" onclick="siguiente(2)">Siguiente ➡️</button>
+                </div>
+
+                <!-- PREGUNTA 2 -->
+                <div class="pregunta" id="p2">
+                    <h3>Pregunta 2 de 3</h3>
+                    <p>Te llega un WhatsApp de un número desconocido:</p>
+                    <div class="ejemplo-correo">
+                        <strong>De:</strong> +57 300 123 4567 (desconocido)<br>
+                        <strong>Mensaje:</strong> 🎉 ¡FELICIDADES! Ganaste un bono de 【entity-Nequi¦canonical_name=Nequi】 de $500.000. Reclámalo aquí: <br>
+                        <a href="#">【entity-nequi¦canonical_name=Nequi】-premio-gratis.xyz/reclamar</a>
+                    </div>
+                    <div class="opciones">
+                        <button onclick="responder(this, false, 'f2')">A) Entro a reclamar, es gratis</button>
+                        <button onclick="responder(this, true, 'f2')">B) Lo ignoro y lo reporto, es phishing. 【entity-Nequi¦canonical_name=Nequi】 nunca regala plata así</button>
+                        <button onclick="responder(this, false, 'f2')">C) Le envío mis datos para que me lo consignen</button>
+                    </div>
+                    <div class="feedback" id="f2"></div>
+                    <button class="btn-siguiente" id="s2" onclick="siguiente(3)">Siguiente ➡️</button>
+                </div>
+
+                <!-- PREGUNTA 3 -->
+                <div class="pregunta" id="p3">
+                    <h3>Pregunta 3 de 3</h3>
+                    <p>¿Cuál de estas URLs es la SEGURA?</p>
+                    <div class="opciones">
+                        <button onclick="responder(this, false, 'f3')">A) https://bancolombia-seguro-actualizar.com/login</button>
+                        <button onclick="responder(this, false, 'f3')">B) http://192.168.1.50/banco/login</button>
+                        <button onclick="responder(this, true, 'f3')">C) https://www.bancolombia.com</button>
+                    </div>
+                    <div class="feedback" id="f3"></div>
+                    <button class="btn-siguiente" id="s3" onclick="mostrarResultado()">Ver mi resultado 🏆</button>
+                </div>
+
+                <!-- RESULTADO -->
+                <div id="resultadoFinal">
+                    <div class="score-big" id="scoreFinal">0/3</div>
+                    <h3 id="mensajeFinal"></h3>
+                    <p id="descFinal" style="color:#64748b; margin: 10px 0 20px;"></p>
+                    <button class="btn-primary large" onclick="location.reload()">Intentar de nuevo 🔄</button>
+                    <button class="btn-secondary large" onclick="window.location.href='../index.html'">Volver al inicio</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 PhishShield - Hecho por David Romero para todo el mundo. 🌎</p>
+    </footer>
+
+    <script>
+        let puntos = 0;
+        let respondidas = 0;
+
+        function responder(boton, esCorrecta, feedbackId) {
+            const contenedor = boton.parentElement;
+            const botones = contenedor.querySelectorAll('button');
+            botones.forEach(b => b.disabled = true);
+
+            const feedback = document.getElementById(feedbackId);
+            const btnSiguienteId = 's' + feedbackId.charAt(1);
+            const btnSiguiente = document.getElementById(btnSiguienteId);
+
+            if (esCorrecta) {
+                boton.classList.add('correcto');
+                feedback.textContent = '✅ ¡Correcto! Muy bien, no caíste en la trampa.';
+                feedback.className = 'feedback show ok';
+                puntos++;
+            } else {
+                boton.classList.add('incorrecto');
+                feedback.textContent = '❌ ¡Cuidado! Ahí caíste. Lee la explicación de la respuesta correcta arriba.';
+                feedback.className = 'feedback show mal';
+                // Mostrar cuál era la correcta
+                botones.forEach(b => {
+                    if (b.getAttribute('onclick')?.includes('true')) b.classList.add('correcto');
+                });
+            }
+            document.getElementById('puntaje').textContent = puntos + ' / 3';
+            if (btnSiguiente) btnSiguiente.classList.add('show');
+        }
+
+        function siguiente(num) {
+            document.querySelectorAll('.pregunta').forEach(p => p.classList.remove('active'));
+            document.getElementById('p' + num).classList.add('active');
+            document.getElementById('barraProgreso').style.width = (num * 33.3) + '%';
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        function mostrarResultado() {
+            document.querySelectorAll('.pregunta').forEach(p => p.classList.remove('active'));
+            document.getElementById('barraProgreso').style.width = '100%';
+            const final = document.getElementById('resultadoFinal');
+            final.classList.add('show');
+            document.getElementById('scoreFinal').textContent = puntos + '/3';
+            const mensaje = document.getElementById('mensajeFinal');
+            const desc = document.getElementById('descFinal');
+            if (puntos === 3) {
+                mensaje.textContent = '🏆 ¡Eres un experto en PhishShield!';
+                desc.textContent = 'No caíste en ninguna trampa. Ya sabes detectar phishing como un profesional.';
+            } else if (puntos === 2) {
+                mensaje.textContent = '👍 ¡Casi perfecto!';
+                desc.textContent = 'Vas muy bien, solo te falta pulir un detalle. Vuelve a leer las lecciones.';
+            } else {
+                mensaje.textContent = '⚠️ ¡Necesitas practicar más!';
+                desc.textContent = 'Caíste en varias trampas. No te preocupes, ahora ya sabes cómo identificarlas. Inténtalo de nuevo.';
+            }
+        }
+    </script>
+</body>
+</html>
